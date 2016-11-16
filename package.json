@@ -33,7 +33,7 @@
         "base58-native": "*",
         "async": "*",
         "merkle-bitcoin": "https://github.com/joshuayabut/merkle-bitcoin.git",
-        "bitcoinjs-lib": "*",
+        "bitcoinjs-lib": "https://github.com/joshuayabut/bitcoinjs-lib.git",
         "promise": "*"
     },
     "engines": {
