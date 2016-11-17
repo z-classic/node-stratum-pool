@@ -28,12 +28,12 @@
         "url": "https://github.com/joshuayabut/node-stratum-pool.git"
     },
     "dependencies": {
-        "multi-hashing": "https://github.com/joshuayabut/node-multi-hashing.git",
+        "multi-hashing": "git+https://github.com/joshuayabut/node-multi-hashing.git",
         "bignum": "*",
         "base58-native": "*",
         "async": "*",
-        "merkle-bitcoin": "https://github.com/joshuayabut/merkle-bitcoin.git",
-        "bitcoinjs-lib": "https://github.com/joshuayabut/bitcoinjs-lib.git",
+        "merkle-bitcoin": "git+https://github.com/joshuayabut/merkle-bitcoin.git",
+        "bitcoinjs-lib": "git+https://github.com/joshuayabut/bitcoinjs-lib.git",
         "promise": "*"
     },
     "engines": {
