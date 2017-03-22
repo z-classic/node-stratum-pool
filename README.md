@@ -1,10 +1,10 @@
-High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin
+High performance Stratum poolserver for equihash in Node.js. One instance of this software can startup and manage multiple coin
 pools, each with their own daemon and stratum port :)
 
 #### Notice
 This is a module for Node.js that will do nothing on its own. Unless you're a Node.js developer who would like to
 handle stratum authentication and raw share data then this module will not be of use to you. For a full featured portal
-that uses this module, see [NOMP (Node Open Mining Portal)](https://github.com/zone117x/node-open-mining-portal). It
+that uses this module, see [Z-NOMP (Z Node Open Mining Portal)](https://github.com/z-classic/z-nomp). It
 handles payments, website front-end, database layer, mutli-coin/pool support, auto-switching miners between coins/pools,
 etc.. The portal also has an [MPOS](https://github.com/MPOS/php-mpos) compatibility mode so that the it can function as
 a drop-in-replacement for [python-stratum-mining](https://github.com/Crypto-Expert/stratum-mining).
@@ -38,34 +38,11 @@ Features
 * When started with a coin deamon that hasn't finished syncing to the network it shows the blockchain download progress and initializes once synced
 
 #### Hashing algorithms supported:
-* ✓ __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
-* ✓ __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
-* ✓ __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
-* ✓ __Scrypt-N__ (Vertcoin [VTC])
-* ✓ __Quark__ (Quarkcoin [QRK])
-* ✓ __X11__ (Darkcoin [DRK], Hirocoin, Limecoin)
-* ✓ __X13__ (MaruCoin, BoostCoin)
-* ✓ __NIST5__ (Talkcoin)
-* ✓ __Keccak__ (Maxcoin [MAX], HelixCoin, CryptoMeth, Galleon, 365coin, Slothcoin, BitcointalkCoin)
-* ✓ __Skein__ (Skeincoin [SKC])
-* ✓ __Groestl__ (Groestlcoin [GRS])
-
-May be working (needs additional testing):
-* ? *Blake* (Blakecoin [BLC])
-* ? *Fugue* (Fuguecoin [FC])
-* ? *Qubit* (Qubitcoin [Q2C], Myriadcoin [MYR])
-* ? *SHAvite-3* (INKcoin [INK])
-* ? *Sha1* (Sha1coin [SHA], Yaycoin [YAY])
-
-Not working currently:
-* *Groestl* - for Myriadcoin
-* *Keccak* - for eCoin & Copperlark
-* *Hefty1* (Heavycoin [HVC])
-
+* ✓ __Equihash__ (Zclassic, Zcash)
 
 Requirements
 ------------
-* node v0.10+
+* node v7+
 * coin daemon (preferably one with a relatively updated API and not some crapcoin :p)
 
 
@@ -75,7 +52,7 @@ Example Usage
 #### Install as a node module by cloning repository
 
 ```bash
-git clone https://github.com/zone117x/node-stratum-pool node_modules/stratum-pool
+git clone https://github.com/z-classic/node-stratum-pool node_modules/stratum-pool
 npm update
 ```
 
@@ -83,8 +60,7 @@ npm update
 
 Create the configuration for your coin:
 
-Possible options for `algorithm`: *sha256, scrypt, scrypt-jane, scrypt-n, quark, x11, keccak, blake,
-skein, groestl, fugue, shavite3, hefty1, qubit, or sha1*.
+Possible options for `algorithm`: *equihash*.
 
 ```javascript
 var myCoin = {
@@ -104,54 +80,79 @@ var myCoin = {
 };
 ```
 
-If you are using the `scrypt-jane` algorithm there are additional configurations:
+If you are an equihash coin that doesn't have any founder's rewards,
 
 ```javascript
 var myCoin = {
-    "name": "Freecoin",
-    "symbol": "FEC",
-    "algorithm": "scrypt-jane",
-    "chainStartTime": 1375801200, //defaults to 1367991200 (YACoin) if not used
-    "nMin": 6, //defaults to 4 if not used
-    "nMax": 32 //defaults to 30 if not used
+    "name": "Zclassic",
+    "symbol": "ZCL",
+    "algorithm": "equihash",
 };
 ```
 
-If you are using the `scrypt-n` algorithm there is an additional configuration:
+If you are using an equihash coin that has founder's rewards, you need to include details about the FR system,
 ```javascript
 var myCoin = {
-    "name": "Execoin",
-    "symbol": "EXE",
-    "algorithm": "scrypt-n",
-    /* This defaults to Vertcoin's timetable if not used. It is required for scrypt-n coins that
-       have modified their N-factor timetable to be different than Vertcoin's. */
-    "timeTable": {
-        "2048": 1390959880,
-        "4096": 1438295269,
-        "8192": 1485630658,
-        "16384": 1532966047,
-        "32768": 1580301436,
-        "65536": 1627636825,
-        "131072": 1674972214,
-        "262144": 1722307603
-    }
+    "name": "zcash_testnet",
+    "symbol": "taz",
+    "algorithm": "equihash",
+
+    "payFoundersReward": true,
+    "percentFoundersReward": 20,
+    "maxFoundersRewardBlockHeight": 849999,
+    "foundersRewardAddressChangeInterval": 17709.3125,
+	"vFoundersRewardAddress": [
+		"t2UNzUUx8mWBCRYPRezvA363EYXyEpHokyi",
+		"t2N9PH9Wk9xjqYg9iin1Ua3aekJqfAtE543",
+		"t2NGQjYMQhFndDHguvUw4wZdNdsssA6K7x2",
+		"t27ktmq1kbeCWiQ5TZ7w5npSzcdbBmTB7v6",
+		"t2GcBttAKD2WTHka8HyGc2dfvVTKYZUfHmJ",
+		"t2Q3vxWaD9LrdqUE8Xd9Ddjpr9pUQ2aGotK",
+		"t2TTfWDsYu998fHWzVP9Gns4fgxXXRi1Wzu",
+		"t2KS6R4MMWdSBMjLCiw2iMyhWGRQPmyRqDn",
+		"t2Q2ELrgotWv3Eec6LEtMMiiQ8dtW38u8Tj",
+		"t2AEgJA88vTWAKqxJDFUEJWyHUtQAZi5G1D",
+		"t2HCSdmpq1TQKksuwPQevwAzPTgfJ2rkMbG",
+		"t2HQCPFAUQaUdJWHPhg5pPBxit7inaJzubE",
+		"t2Fzqvq8Y9e6Mn3JNPb982aYsLmq4b5HmhH",
+		"t2HEz7YZQqDUgC5h4y2WSD3mWneqJNVRjjJ",
+		"t2GCR1SCk687Eeo5NEZ23MLsms7JjVWBgfG",
+		"t2KyiPR9Lztq2w1w747X6W4nkUMAGL8M9KN",
+		"t2UxymadyxSyVihmbq7S1yxw5dCBqJ1S4jT",
+		"t2AVeMy7fdmTcJhckqiKRG8B7F1vccEhSqU",
+		"t26m7LwihQzD2sH7ZVhYpPJM5j7kzwbfKW9",
+		"t2DgwUNTe7NxuyPU6fxsB5xJXap3E4yWXrN",
+		"t2U6funcXA11fC9SZehyvUL3rk3Vhuh7fzS",
+		"t284JhyS8LGM72Tx1porSqwrcq3CejthP1p",
+		"t29egu8QcpzKeLoPLqWS6QVMnUUPQdF6eNm",
+		"t29LqD9p9D3B26euBwFi6mfcWu8HPA38VNs",
+		"t28GsAMCxAyLy85XaasddDzaYFTtfewr86y",
+		"t2GV44QyaikQPLUfm6oTfZnw71LLjnR7gDG",
+		"t2U2QzNLQ1jtAu4L6xxVnRXLBsQpQvGRR2g",
+		"t2QKGr5PNan7nrwDgseyHMN9NFeeuUjCh8b",
+		"t2AfS8u6HwBeJpKpbuxztvRjupKQDXqnrwa",
+		"t2CTRQUViQd3CWMhnKhFnUHqDLUyTxmWhJs",
+		"t2CbM9EqszNURqh1UXZBXYhwp1R4GwEhWRE",
+		"t2LM7uYiAsKDU42GNSnMwDxbZ8s1DowQzYH",
+		"t2AgvT35LHR378AE3ouz6xKMhkTLHLJC6nD",
+		"t285EAQXUVyi4NMddJv2QqTrnv45GRMbP8e",
+		"t2EpMRCD5b8f2DCQ37npNULcpZhkjC8muqA",
+		"t2BCmWXrRPiCeQTpizSWKKRPM5X6PS7umDY",
+		"t2DN7X6wDFn5hYKBiBmn3Z98st419yaTVTH",
+		"t2QJj8HeCwQ6mHwqekxxDLZntYpZTHNU62t",
+		"t2QdHBR1Yciqn4j8gpS8DcQZZtYetKvfNj3",
+		"t2E5cpLA1ey5VNxFNcuopeQMq2rH2NHiPdu",
+		"t2EVRGtzjFAyz8CF8ndvLuiJu7qZUfDa93H",
+		"t2KoQDk3BSFadBkuaWdLwchFuQamzw9RE4L",
+		"t2FnR3yhTmuiejEJeu6qpidWTghRd1HpjLt",
+		"t2BAuBAAospDc9d1u5nNGEi6x4NRJBD2PQ2",
+		"t2RtKrLCGcyPkm4a4APg1YY9Wu2m4R2PgrB",
+		"t28aUbSteZzBq2pFgj1K1XNZRZP5mMMyakV",
+		"t2Urdy1ERfkvsFuy6Z4BkhvYGzWdmivfAFR",
+		"t2ADinR4JrvCMd4Q1XGALPajzFrirqvhED6"
+	]
 };
 ```
-
-If you are using the `keccak` algorithm there are additional configurations *(The rare `normalHashing` keccak coins
-such as Copperlark and eCoin don't appear to work yet - only the popular ones like Maxcoin are)*:
-```javascript
-var myCoin = {
-    "name": "eCoin",
-    "symbol": "ECN",
-    "algorithm": "keccak",
-
-    /* This is not required and set to false by default. Some coins such as Copperlark and eCoin
-       require it to be set to true. Maxcoin and most others are false. */
-    "normalHashing": true
-};
-```
-
 
 Create and start new pool with configuration options and authentication function
 
@@ -171,10 +172,6 @@ var pool = Stratum.createPool({
     "rewardRecipients": {
         "n37vuNFkXfk15uFnGoVyHZ6PYQxppD3QqK": 1.5, //1.5% goes to pool op
         "mirj3LtZxbSTharhtXvotqtJXUY7ki5qfx": 0.5, //0.5% goes to a pool co-owner
-
-        /* 0.1% donation to NOMP. This pubkey can accept any type of coin, please leave this in
-           your config to help support NOMP development. */
-        "22851477d63a085dbc2398c8430af1c09e7343f6": 0.1
     },
 
     "blockRefreshInterval": 1000, //How often to poll RPC daemons for new blocks, in milliseconds
@@ -215,14 +212,17 @@ var pool = Stratum.createPool({
     /* Each pool can have as many ports for your miners to connect to as you wish. Each port can
        be configured to use its own pool difficulty and variable difficulty settings. varDiff is
        optional and will only be used for the ports you configure it for. */
+       
+       //1 Diff is 8192 network. IE: .5 diff is actually 4096. 2 diff is 16384
+       
     "ports": {
         "3032": { //A port for your miners to connect to
-            "diff": 32, //the pool difficulty for this port
+            "diff": 0.125, //the pool difficulty for this port
 
             /* Variable difficulty is a feature that will automatically adjust difficulty for
                individual miners based on their hashrate in order to lower networking overhead */
             "varDiff": {
-                "minDiff": 8, //Minimum difficulty
+                "minDiff": 0.125, //Minimum difficulty
                 "maxDiff": 512, //Network difficulty will be used if it is lower than this
                 "targetTime": 15, //Try to get 1 share per this many seconds
                 "retargetTime": 90, //Check to see if we should retarget every this many seconds
